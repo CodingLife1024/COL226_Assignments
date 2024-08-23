@@ -1,0 +1,2140 @@
+
+state 0:
+
+	START : . Block 
+
+	RATIONALDEC	shift 4
+
+	START	goto 137
+	Block	goto 3
+	DeclarationSeq	goto 2
+	RatVarDecls	goto 1
+
+	.	reduce by rule 3
+
+
+state 1:
+
+	DeclarationSeq : RatVarDecls . IntVarDecls BoolVarDecls 
+
+	INTEGERDEC	shift 6
+
+	IntVarDecls	goto 5
+
+	.	reduce by rule 5
+
+
+state 2:
+
+	Block : DeclarationSeq . ProcDecls LBRACE Commands RBRACE 
+
+	PROCEDURE	shift 9
+
+	ProcDecls	goto 8
+	ProcDef	goto 7
+
+	.	reduce by rule 11
+
+
+state 3:
+
+	START : Block .  (reduce by rule 0)
+
+
+
+	.	reduce by rule 0
+
+
+state 4:
+
+	RatVarDecls : RATIONALDEC . Decs SEMI 
+
+	ID	shift 11
+
+	Decs	goto 10
+
+	.	error
+
+
+state 5:
+
+	DeclarationSeq : RatVarDecls IntVarDecls . BoolVarDecls 
+
+	BOOLEANDEC	shift 13
+
+	BoolVarDecls	goto 12
+
+	.	reduce by rule 7
+
+
+state 6:
+
+	IntVarDecls : INTEGERDEC . Decs SEMI 
+
+	ID	shift 11
+
+	Decs	goto 14
+
+	.	error
+
+
+state 7:
+
+	ProcDecls : ProcDef . SEMI ProcDecls 
+
+	SEMI	shift 15
+
+
+	.	error
+
+
+state 8:
+
+	Block : DeclarationSeq ProcDecls . LBRACE Commands RBRACE 
+
+	LBRACE	shift 16
+
+
+	.	error
+
+
+state 9:
+
+	ProcDef : PROCEDURE . ID Block 
+
+	ID	shift 17
+
+
+	.	error
+
+
+state 10:
+
+	RatVarDecls : RATIONALDEC Decs . SEMI 
+
+	SEMI	shift 18
+
+
+	.	error
+
+
+state 11:
+
+	Decs : ID . COMMA Decs 
+	Decs : ID .  (reduce by rule 10)
+
+	COMMA	shift 19
+
+
+	.	reduce by rule 10
+
+
+state 12:
+
+	DeclarationSeq : RatVarDecls IntVarDecls BoolVarDecls .  (reduce by rule 2)
+
+
+
+	.	reduce by rule 2
+
+
+state 13:
+
+	BoolVarDecls : BOOLEANDEC . Decs SEMI 
+
+	ID	shift 11
+
+	Decs	goto 20
+
+	.	error
+
+
+state 14:
+
+	IntVarDecls : INTEGERDEC Decs . SEMI 
+
+	SEMI	shift 21
+
+
+	.	error
+
+
+state 15:
+
+	ProcDecls : ProcDef SEMI . ProcDecls 
+
+	PROCEDURE	shift 9
+
+	ProcDecls	goto 22
+	ProcDef	goto 7
+
+	.	reduce by rule 11
+
+
+state 16:
+
+	Block : DeclarationSeq ProcDecls LBRACE . Commands RBRACE 
+
+	ID	shift 30
+	IF	shift 29
+	WHILE	shift 28
+	PRINT	shift 27
+	READ	shift 26
+	CALL	shift 25
+
+	Commands	goto 24
+	Command	goto 23
+
+	.	reduce by rule 14
+
+
+state 17:
+
+	ProcDef : PROCEDURE ID . Block 
+
+	RATIONALDEC	shift 4
+
+	Block	goto 31
+	DeclarationSeq	goto 2
+	RatVarDecls	goto 1
+
+	.	reduce by rule 3
+
+
+state 18:
+
+	RatVarDecls : RATIONALDEC Decs SEMI .  (reduce by rule 4)
+
+
+
+	.	reduce by rule 4
+
+
+state 19:
+
+	Decs : ID COMMA . Decs 
+
+	ID	shift 11
+
+	Decs	goto 32
+
+	.	error
+
+
+state 20:
+
+	BoolVarDecls : BOOLEANDEC Decs . SEMI 
+
+	SEMI	shift 33
+
+
+	.	error
+
+
+state 21:
+
+	IntVarDecls : INTEGERDEC Decs SEMI .  (reduce by rule 6)
+
+
+
+	.	reduce by rule 6
+
+
+state 22:
+
+	ProcDecls : ProcDef SEMI ProcDecls .  (reduce by rule 12)
+
+
+
+	.	reduce by rule 12
+
+
+state 23:
+
+	Commands : Command . SEMI Commands 
+
+	SEMI	shift 34
+
+
+	.	error
+
+
+state 24:
+
+	Block : DeclarationSeq ProcDecls LBRACE Commands . RBRACE 
+
+	RBRACE	shift 35
+
+
+	.	error
+
+
+state 25:
+
+	Command : CALL . ID 
+
+	ID	shift 36
+
+
+	.	error
+
+
+state 26:
+
+	Command : READ . LPAREN ID RPAREN 
+
+	LPAREN	shift 37
+
+
+	.	error
+
+
+state 27:
+
+	Command : PRINT . LPAREN Expression RPAREN 
+
+	LPAREN	shift 38
+
+
+	.	error
+
+
+state 28:
+
+	Command : WHILE . Expression DO LBRACE Commands RBRACE OD 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	Expression	goto 46
+	New1Expression	goto 45
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 29:
+
+	Command : IF . Expression THEN LBRACE Commands RBRACE ELSE LBRACE Commands RBRACE FI 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	Expression	goto 62
+	New1Expression	goto 45
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 30:
+
+	Command : ID . ASSIGN Expression 
+
+	ASSIGN	shift 63
+
+
+	.	error
+
+
+state 31:
+
+	ProcDef : PROCEDURE ID Block .  (reduce by rule 13)
+
+
+
+	.	reduce by rule 13
+
+
+state 32:
+
+	Decs : ID COMMA Decs .  (reduce by rule 9)
+
+
+
+	.	reduce by rule 9
+
+
+state 33:
+
+	BoolVarDecls : BOOLEANDEC Decs SEMI .  (reduce by rule 8)
+
+
+
+	.	reduce by rule 8
+
+
+state 34:
+
+	Commands : Command SEMI . Commands 
+
+	ID	shift 30
+	IF	shift 29
+	WHILE	shift 28
+	PRINT	shift 27
+	READ	shift 26
+	CALL	shift 25
+
+	Commands	goto 64
+	Command	goto 23
+
+	.	reduce by rule 14
+
+
+state 35:
+
+	Block : DeclarationSeq ProcDecls LBRACE Commands RBRACE .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 36:
+
+	Command : CALL ID .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
+state 37:
+
+	Command : READ LPAREN . ID RPAREN 
+
+	ID	shift 65
+
+
+	.	error
+
+
+state 38:
+
+	Command : PRINT LPAREN . Expression RPAREN 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	Expression	goto 66
+	New1Expression	goto 45
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 39:
+
+	New6Expression : New7Expression .  (reduce by rule 45)
+
+
+
+	.	reduce by rule 45
+
+
+state 40:
+
+	New5Expression : New6Expression .  (reduce by rule 39)
+
+
+
+	.	reduce by rule 39
+
+
+state 41:
+
+	New4Expression : New5Expression .  (reduce by rule 34)
+	New5Expression : New5Expression . TIMES New6Expression 
+	New5Expression : New5Expression . DIV New6Expression 
+	New5Expression : New5Expression . MOD New6Expression 
+	New5Expression : New5Expression . RATTIMES New6Expression 
+	New5Expression : New5Expression . RATDIV New6Expression 
+
+	RATTIMES	shift 71
+	RATDIV	shift 70
+	TIMES	shift 69
+	DIV	shift 68
+	MOD	shift 67
+
+
+	.	reduce by rule 34
+
+
+state 42:
+
+	New3Expression : New4Expression .  (reduce by rule 29)
+	New4Expression : New4Expression . PLUS New5Expression 
+	New4Expression : New4Expression . SUB New5Expression 
+	New4Expression : New4Expression . RATPLUS New5Expression 
+	New4Expression : New4Expression . RATSUB New5Expression 
+
+	RATPLUS	shift 75
+	RATSUB	shift 74
+	PLUS	shift 73
+	SUB	shift 72
+
+
+	.	reduce by rule 29
+
+
+state 43:
+
+	New2Expression : New3Expression .  (reduce by rule 26)
+	New3Expression : New3Expression . GT New4Expression 
+	New3Expression : New3Expression . GE New4Expression 
+	New3Expression : New3Expression . LT New4Expression 
+	New3Expression : New3Expression . LE New4Expression 
+
+	LT	shift 79
+	LE	shift 78
+	GT	shift 77
+	GE	shift 76
+
+
+	.	reduce by rule 26
+
+
+state 44:
+
+	New1Expression : New2Expression .  (reduce by rule 24)
+	New2Expression : New2Expression . EQ New3Expression 
+	New2Expression : New2Expression . NE New3Expression 
+
+	EQ	shift 81
+	NE	shift 80
+
+
+	.	reduce by rule 24
+
+
+state 45:
+
+	Expression : New1Expression .  (reduce by rule 22)
+	New1Expression : New1Expression . AND New2Expression 
+
+	AND	shift 82
+
+
+	.	reduce by rule 22
+
+
+state 46:
+
+	Command : WHILE Expression . DO LBRACE Commands RBRACE OD 
+	Expression : Expression . OR New1Expression 
+
+	DO	shift 84
+	OR	shift 83
+
+
+	.	error
+
+
+state 47:
+
+	New7Expression : LPAREN . Expression RPAREN 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	Expression	goto 85
+	New1Expression	goto 45
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 48:
+
+	New6Expression : PLUS . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 86
+	New7Expression	goto 39
+
+	.	error
+
+
+state 49:
+
+	New6Expression : NOT . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 87
+	New7Expression	goto 39
+
+	.	error
+
+
+state 50:
+
+	New6Expression : NEG . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 88
+	New7Expression	goto 39
+
+	.	error
+
+
+state 51:
+
+	New6Expression : TODECIMAL . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 89
+	New7Expression	goto 39
+
+	.	error
+
+
+state 52:
+
+	New6Expression : FROMDECIMAL . New6Expression 
+	New7Expression : FROMDECIMAL . LPAREN NUMRAT RPAREN 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 91
+
+	New6Expression	goto 90
+	New7Expression	goto 39
+
+	.	error
+
+
+state 53:
+
+	New6Expression : SHOWDECIMAL . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 92
+	New7Expression	goto 39
+
+	.	error
+
+
+state 54:
+
+	New6Expression : SHOWRAT . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 93
+	New7Expression	goto 39
+
+	.	error
+
+
+state 55:
+
+	New6Expression : RAT . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 94
+	New7Expression	goto 39
+
+	.	error
+
+
+state 56:
+
+	New7Expression : MAKERAT . LPAREN Expression COMMA Expression RPAREN 
+
+	LPAREN	shift 95
+
+
+	.	error
+
+
+state 57:
+
+	New6Expression : INVERSE . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 96
+	New7Expression	goto 39
+
+	.	error
+
+
+state 58:
+
+	New7Expression : FALSE .  (reduce by rule 59)
+
+
+
+	.	reduce by rule 59
+
+
+state 59:
+
+	New7Expression : TRUE .  (reduce by rule 58)
+
+
+
+	.	reduce by rule 58
+
+
+state 60:
+
+	New7Expression : NUMINT .  (reduce by rule 57)
+
+
+
+	.	reduce by rule 57
+
+
+state 61:
+
+	New7Expression : ID .  (reduce by rule 61)
+
+
+
+	.	reduce by rule 61
+
+
+state 62:
+
+	Command : IF Expression . THEN LBRACE Commands RBRACE ELSE LBRACE Commands RBRACE FI 
+	Expression : Expression . OR New1Expression 
+
+	THEN	shift 97
+	OR	shift 83
+
+
+	.	error
+
+
+state 63:
+
+	Command : ID ASSIGN . Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	Expression	goto 98
+	New1Expression	goto 45
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 64:
+
+	Commands : Command SEMI Commands .  (reduce by rule 15)
+
+
+
+	.	reduce by rule 15
+
+
+state 65:
+
+	Command : READ LPAREN ID . RPAREN 
+
+	RPAREN	shift 99
+
+
+	.	error
+
+
+state 66:
+
+	Command : PRINT LPAREN Expression . RPAREN 
+	Expression : Expression . OR New1Expression 
+
+	OR	shift 83
+	RPAREN	shift 100
+
+
+	.	error
+
+
+state 67:
+
+	New5Expression : New5Expression MOD . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 101
+	New7Expression	goto 39
+
+	.	error
+
+
+state 68:
+
+	New5Expression : New5Expression DIV . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 102
+	New7Expression	goto 39
+
+	.	error
+
+
+state 69:
+
+	New5Expression : New5Expression TIMES . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 103
+	New7Expression	goto 39
+
+	.	error
+
+
+state 70:
+
+	New5Expression : New5Expression RATDIV . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 104
+	New7Expression	goto 39
+
+	.	error
+
+
+state 71:
+
+	New5Expression : New5Expression RATTIMES . New6Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New6Expression	goto 105
+	New7Expression	goto 39
+
+	.	error
+
+
+state 72:
+
+	New4Expression : New4Expression SUB . New5Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New5Expression	goto 106
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 73:
+
+	New4Expression : New4Expression PLUS . New5Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New5Expression	goto 107
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 74:
+
+	New4Expression : New4Expression RATSUB . New5Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New5Expression	goto 108
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 75:
+
+	New4Expression : New4Expression RATPLUS . New5Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New5Expression	goto 109
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 76:
+
+	New3Expression : New3Expression GE . New4Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New4Expression	goto 110
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 77:
+
+	New3Expression : New3Expression GT . New4Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New4Expression	goto 111
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 78:
+
+	New3Expression : New3Expression LE . New4Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New4Expression	goto 112
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 79:
+
+	New3Expression : New3Expression LT . New4Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New4Expression	goto 113
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 80:
+
+	New2Expression : New2Expression NE . New3Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New3Expression	goto 114
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 81:
+
+	New2Expression : New2Expression EQ . New3Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New3Expression	goto 115
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 82:
+
+	New1Expression : New1Expression AND . New2Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New2Expression	goto 116
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 83:
+
+	Expression : Expression OR . New1Expression 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	New1Expression	goto 117
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 84:
+
+	Command : WHILE Expression DO . LBRACE Commands RBRACE OD 
+
+	LBRACE	shift 118
+
+
+	.	error
+
+
+state 85:
+
+	Expression : Expression . OR New1Expression 
+	New7Expression : LPAREN Expression . RPAREN 
+
+	OR	shift 83
+	RPAREN	shift 119
+
+
+	.	error
+
+
+state 86:
+
+	New6Expression : PLUS New6Expression .  (reduce by rule 54)
+
+
+
+	.	reduce by rule 54
+
+
+state 87:
+
+	New6Expression : NOT New6Expression .  (reduce by rule 53)
+
+
+
+	.	reduce by rule 53
+
+
+state 88:
+
+	New6Expression : NEG New6Expression .  (reduce by rule 52)
+
+
+
+	.	reduce by rule 52
+
+
+state 89:
+
+	New6Expression : TODECIMAL New6Expression .  (reduce by rule 51)
+
+
+
+	.	reduce by rule 51
+
+
+state 90:
+
+	New6Expression : FROMDECIMAL New6Expression .  (reduce by rule 50)
+
+
+
+	.	reduce by rule 50
+
+
+state 91:
+
+	New7Expression : FROMDECIMAL LPAREN . NUMRAT RPAREN 
+	New7Expression : LPAREN . Expression RPAREN 
+
+	ID	shift 61
+	NUMRAT	shift 120
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	Expression	goto 85
+	New1Expression	goto 45
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 92:
+
+	New6Expression : SHOWDECIMAL New6Expression .  (reduce by rule 49)
+
+
+
+	.	reduce by rule 49
+
+
+state 93:
+
+	New6Expression : SHOWRAT New6Expression .  (reduce by rule 48)
+
+
+
+	.	reduce by rule 48
+
+
+state 94:
+
+	New6Expression : RAT New6Expression .  (reduce by rule 47)
+
+
+
+	.	reduce by rule 47
+
+
+state 95:
+
+	New7Expression : MAKERAT LPAREN . Expression COMMA Expression RPAREN 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	Expression	goto 121
+	New1Expression	goto 45
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 96:
+
+	New6Expression : INVERSE New6Expression .  (reduce by rule 46)
+
+
+
+	.	reduce by rule 46
+
+
+state 97:
+
+	Command : IF Expression THEN . LBRACE Commands RBRACE ELSE LBRACE Commands RBRACE FI 
+
+	LBRACE	shift 122
+
+
+	.	error
+
+
+state 98:
+
+	Command : ID ASSIGN Expression .  (reduce by rule 16)
+	Expression : Expression . OR New1Expression 
+
+	OR	shift 83
+
+
+	.	reduce by rule 16
+
+
+state 99:
+
+	Command : READ LPAREN ID RPAREN .  (reduce by rule 18)
+
+
+
+	.	reduce by rule 18
+
+
+state 100:
+
+	Command : PRINT LPAREN Expression RPAREN .  (reduce by rule 19)
+
+
+
+	.	reduce by rule 19
+
+
+state 101:
+
+	New5Expression : New5Expression MOD New6Expression .  (reduce by rule 42)
+
+
+
+	.	reduce by rule 42
+
+
+state 102:
+
+	New5Expression : New5Expression DIV New6Expression .  (reduce by rule 41)
+
+
+
+	.	reduce by rule 41
+
+
+state 103:
+
+	New5Expression : New5Expression TIMES New6Expression .  (reduce by rule 40)
+
+
+
+	.	reduce by rule 40
+
+
+state 104:
+
+	New5Expression : New5Expression RATDIV New6Expression .  (reduce by rule 44)
+
+
+
+	.	reduce by rule 44
+
+
+state 105:
+
+	New5Expression : New5Expression RATTIMES New6Expression .  (reduce by rule 43)
+
+
+
+	.	reduce by rule 43
+
+
+state 106:
+
+	New4Expression : New4Expression SUB New5Expression .  (reduce by rule 36)
+	New5Expression : New5Expression . TIMES New6Expression 
+	New5Expression : New5Expression . DIV New6Expression 
+	New5Expression : New5Expression . MOD New6Expression 
+	New5Expression : New5Expression . RATTIMES New6Expression 
+	New5Expression : New5Expression . RATDIV New6Expression 
+
+	RATTIMES	shift 71
+	RATDIV	shift 70
+	TIMES	shift 69
+	DIV	shift 68
+	MOD	shift 67
+
+
+	.	reduce by rule 36
+
+
+state 107:
+
+	New4Expression : New4Expression PLUS New5Expression .  (reduce by rule 35)
+	New5Expression : New5Expression . TIMES New6Expression 
+	New5Expression : New5Expression . DIV New6Expression 
+	New5Expression : New5Expression . MOD New6Expression 
+	New5Expression : New5Expression . RATTIMES New6Expression 
+	New5Expression : New5Expression . RATDIV New6Expression 
+
+	RATTIMES	shift 71
+	RATDIV	shift 70
+	TIMES	shift 69
+	DIV	shift 68
+	MOD	shift 67
+
+
+	.	reduce by rule 35
+
+
+state 108:
+
+	New4Expression : New4Expression RATSUB New5Expression .  (reduce by rule 38)
+	New5Expression : New5Expression . TIMES New6Expression 
+	New5Expression : New5Expression . DIV New6Expression 
+	New5Expression : New5Expression . MOD New6Expression 
+	New5Expression : New5Expression . RATTIMES New6Expression 
+	New5Expression : New5Expression . RATDIV New6Expression 
+
+	RATTIMES	shift 71
+	RATDIV	shift 70
+	TIMES	shift 69
+	DIV	shift 68
+	MOD	shift 67
+
+
+	.	reduce by rule 38
+
+
+state 109:
+
+	New4Expression : New4Expression RATPLUS New5Expression .  (reduce by rule 37)
+	New5Expression : New5Expression . TIMES New6Expression 
+	New5Expression : New5Expression . DIV New6Expression 
+	New5Expression : New5Expression . MOD New6Expression 
+	New5Expression : New5Expression . RATTIMES New6Expression 
+	New5Expression : New5Expression . RATDIV New6Expression 
+
+	RATTIMES	shift 71
+	RATDIV	shift 70
+	TIMES	shift 69
+	DIV	shift 68
+	MOD	shift 67
+
+
+	.	reduce by rule 37
+
+
+state 110:
+
+	New3Expression : New3Expression GE New4Expression .  (reduce by rule 31)
+	New4Expression : New4Expression . PLUS New5Expression 
+	New4Expression : New4Expression . SUB New5Expression 
+	New4Expression : New4Expression . RATPLUS New5Expression 
+	New4Expression : New4Expression . RATSUB New5Expression 
+
+	RATPLUS	shift 75
+	RATSUB	shift 74
+	PLUS	shift 73
+	SUB	shift 72
+
+
+	.	reduce by rule 31
+
+
+state 111:
+
+	New3Expression : New3Expression GT New4Expression .  (reduce by rule 30)
+	New4Expression : New4Expression . PLUS New5Expression 
+	New4Expression : New4Expression . SUB New5Expression 
+	New4Expression : New4Expression . RATPLUS New5Expression 
+	New4Expression : New4Expression . RATSUB New5Expression 
+
+	RATPLUS	shift 75
+	RATSUB	shift 74
+	PLUS	shift 73
+	SUB	shift 72
+
+
+	.	reduce by rule 30
+
+
+state 112:
+
+	New3Expression : New3Expression LE New4Expression .  (reduce by rule 33)
+	New4Expression : New4Expression . PLUS New5Expression 
+	New4Expression : New4Expression . SUB New5Expression 
+	New4Expression : New4Expression . RATPLUS New5Expression 
+	New4Expression : New4Expression . RATSUB New5Expression 
+
+	RATPLUS	shift 75
+	RATSUB	shift 74
+	PLUS	shift 73
+	SUB	shift 72
+
+
+	.	reduce by rule 33
+
+
+state 113:
+
+	New3Expression : New3Expression LT New4Expression .  (reduce by rule 32)
+	New4Expression : New4Expression . PLUS New5Expression 
+	New4Expression : New4Expression . SUB New5Expression 
+	New4Expression : New4Expression . RATPLUS New5Expression 
+	New4Expression : New4Expression . RATSUB New5Expression 
+
+	RATPLUS	shift 75
+	RATSUB	shift 74
+	PLUS	shift 73
+	SUB	shift 72
+
+
+	.	reduce by rule 32
+
+
+state 114:
+
+	New2Expression : New2Expression NE New3Expression .  (reduce by rule 28)
+	New3Expression : New3Expression . GT New4Expression 
+	New3Expression : New3Expression . GE New4Expression 
+	New3Expression : New3Expression . LT New4Expression 
+	New3Expression : New3Expression . LE New4Expression 
+
+	LT	shift 79
+	LE	shift 78
+	GT	shift 77
+	GE	shift 76
+
+
+	.	reduce by rule 28
+
+
+state 115:
+
+	New2Expression : New2Expression EQ New3Expression .  (reduce by rule 27)
+	New3Expression : New3Expression . GT New4Expression 
+	New3Expression : New3Expression . GE New4Expression 
+	New3Expression : New3Expression . LT New4Expression 
+	New3Expression : New3Expression . LE New4Expression 
+
+	LT	shift 79
+	LE	shift 78
+	GT	shift 77
+	GE	shift 76
+
+
+	.	reduce by rule 27
+
+
+state 116:
+
+	New1Expression : New1Expression AND New2Expression .  (reduce by rule 25)
+	New2Expression : New2Expression . EQ New3Expression 
+	New2Expression : New2Expression . NE New3Expression 
+
+	EQ	shift 81
+	NE	shift 80
+
+
+	.	reduce by rule 25
+
+
+state 117:
+
+	Expression : Expression OR New1Expression .  (reduce by rule 23)
+	New1Expression : New1Expression . AND New2Expression 
+
+	AND	shift 82
+
+
+	.	reduce by rule 23
+
+
+state 118:
+
+	Command : WHILE Expression DO LBRACE . Commands RBRACE OD 
+
+	ID	shift 30
+	IF	shift 29
+	WHILE	shift 28
+	PRINT	shift 27
+	READ	shift 26
+	CALL	shift 25
+
+	Commands	goto 123
+	Command	goto 23
+
+	.	reduce by rule 14
+
+
+state 119:
+
+	New7Expression : LPAREN Expression RPAREN .  (reduce by rule 60)
+
+
+
+	.	reduce by rule 60
+
+
+state 120:
+
+	New7Expression : FROMDECIMAL LPAREN NUMRAT . RPAREN 
+
+	RPAREN	shift 124
+
+
+	.	error
+
+
+state 121:
+
+	Expression : Expression . OR New1Expression 
+	New7Expression : MAKERAT LPAREN Expression . COMMA Expression RPAREN 
+
+	OR	shift 83
+	COMMA	shift 125
+
+
+	.	error
+
+
+state 122:
+
+	Command : IF Expression THEN LBRACE . Commands RBRACE ELSE LBRACE Commands RBRACE FI 
+
+	ID	shift 30
+	IF	shift 29
+	WHILE	shift 28
+	PRINT	shift 27
+	READ	shift 26
+	CALL	shift 25
+
+	Commands	goto 126
+	Command	goto 23
+
+	.	reduce by rule 14
+
+
+state 123:
+
+	Command : WHILE Expression DO LBRACE Commands . RBRACE OD 
+
+	RBRACE	shift 127
+
+
+	.	error
+
+
+state 124:
+
+	New7Expression : FROMDECIMAL LPAREN NUMRAT RPAREN .  (reduce by rule 55)
+
+
+
+	.	reduce by rule 55
+
+
+state 125:
+
+	New7Expression : MAKERAT LPAREN Expression COMMA . Expression RPAREN 
+
+	ID	shift 61
+	NUMINT	shift 60
+	TRUE	shift 59
+	FALSE	shift 58
+	INVERSE	shift 57
+	MAKERAT	shift 56
+	RAT	shift 55
+	SHOWRAT	shift 54
+	SHOWDECIMAL	shift 53
+	FROMDECIMAL	shift 52
+	TODECIMAL	shift 51
+	NEG	shift 50
+	NOT	shift 49
+	PLUS	shift 48
+	LPAREN	shift 47
+
+	Expression	goto 128
+	New1Expression	goto 45
+	New2Expression	goto 44
+	New3Expression	goto 43
+	New4Expression	goto 42
+	New5Expression	goto 41
+	New6Expression	goto 40
+	New7Expression	goto 39
+
+	.	error
+
+
+state 126:
+
+	Command : IF Expression THEN LBRACE Commands . RBRACE ELSE LBRACE Commands RBRACE FI 
+
+	RBRACE	shift 129
+
+
+	.	error
+
+
+state 127:
+
+	Command : WHILE Expression DO LBRACE Commands RBRACE . OD 
+
+	OD	shift 130
+
+
+	.	error
+
+
+state 128:
+
+	Expression : Expression . OR New1Expression 
+	New7Expression : MAKERAT LPAREN Expression COMMA Expression . RPAREN 
+
+	OR	shift 83
+	RPAREN	shift 131
+
+
+	.	error
+
+
+state 129:
+
+	Command : IF Expression THEN LBRACE Commands RBRACE . ELSE LBRACE Commands RBRACE FI 
+
+	ELSE	shift 132
+
+
+	.	error
+
+
+state 130:
+
+	Command : WHILE Expression DO LBRACE Commands RBRACE OD .  (reduce by rule 21)
+
+
+
+	.	reduce by rule 21
+
+
+state 131:
+
+	New7Expression : MAKERAT LPAREN Expression COMMA Expression RPAREN .  (reduce by rule 56)
+
+
+
+	.	reduce by rule 56
+
+
+state 132:
+
+	Command : IF Expression THEN LBRACE Commands RBRACE ELSE . LBRACE Commands RBRACE FI 
+
+	LBRACE	shift 133
+
+
+	.	error
+
+
+state 133:
+
+	Command : IF Expression THEN LBRACE Commands RBRACE ELSE LBRACE . Commands RBRACE FI 
+
+	ID	shift 30
+	IF	shift 29
+	WHILE	shift 28
+	PRINT	shift 27
+	READ	shift 26
+	CALL	shift 25
+
+	Commands	goto 134
+	Command	goto 23
+
+	.	reduce by rule 14
+
+
+state 134:
+
+	Command : IF Expression THEN LBRACE Commands RBRACE ELSE LBRACE Commands . RBRACE FI 
+
+	RBRACE	shift 135
+
+
+	.	error
+
+
+state 135:
+
+	Command : IF Expression THEN LBRACE Commands RBRACE ELSE LBRACE Commands RBRACE . FI 
+
+	FI	shift 136
+
+
+	.	error
+
+
+state 136:
+
+	Command : IF Expression THEN LBRACE Commands RBRACE ELSE LBRACE Commands RBRACE FI .  (reduce by rule 20)
+
+
+
+	.	reduce by rule 20
+
+
+state 137:
+
+
+	EOF	accept
+
+
+	.	error
+
+160 of 792 action table entries left after compaction
+170 goto table entries

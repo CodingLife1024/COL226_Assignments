@@ -1,0 +1,237 @@
+(* Sample interactive calculator for ML-Yacc *)
+open DataTypes
+val ListofBindings: (string * TYPE) list ref = ref [];
+exception UndeclaredBinding
+exception RedeclaredBinding
+fun intlistToString []      = "fin"
+  | intlistToString ((x,RATIONAL)::xs) = x^" : "^"RATIONAL"^ " , " ^ intlistToString xs 
+  | intlistToString ((x,INT)::xs) = x^" : "^"INT"^ " , " ^ intlistToString xs
+  | intlistToString ((x,BOOL)::xs) = x^" : "^"BOOLEAN"^ " , " ^ intlistToString xs
+  | intlistToString ((x,PROCEDURE)::xs) = x^" : "^"PROCEDURE"^ " , " ^ intlistToString xs
+
+fun finserval(id, xs) = 
+  if(null(xs)) then 
+    (print ("Invalid Expression: No binding found for " ^ id ^ "\n");
+    raise UndeclaredBinding;
+    ExpOp.fromInteger("0"))
+  else 
+  (
+    let  
+      val (id1, expression) = hd(xs)
+    in 
+      if(String.compare(id1, id) = EQUAL) then 
+        expression
+      else 
+        finserval(id, tl(xs))
+    end)
+fun addBinding(id, exp, xs) = 
+       ( xs := (id, exp) :: !xs ; xs)
+
+fun createTable(DeclarationSeq, ProcDecls) = 
+let 
+val ht : (string, TYPE) HashTable.hash_table =
+    HashTable.mkTable (HashString.hashString, op=) (42, Fail "not found")
+in 
+  (List.app (fn DEC(Decs, typ) => List.app (fn id => let val x = HashTable.find ht id in if(x = NONE) then HashTable.insert ht (id, typ) else raise RedeclaredBinding end) Decs ) DeclarationSeq;
+  List.app (fn PROCDEF(id, _) => let val x = HashTable.find ht id in if(x = NONE) then  HashTable.insert ht (id, PROCEDURE)  else raise RedeclaredBinding end ) ProcDecls ;
+  ht)
+end 
+ (* errro handling for RedeclaredBinding here *)
+
+%%
+
+
+(* %pos declares the type of positions for terminals.
+   Each symbol has an associated left and right position. *)
+
+
+
+%right ASSIGN
+%left OR
+%left AND
+%left EQ NE
+%left GT GE LT LE
+%left SUB PLUS RATSUB RATPLUS
+%left TIMES DIV MOD RATTIMES RATDIV
+%right INVERSE MAKERAT RAT SHOWRAT SHOWDECIMAL FROMDECIMAL TODECIMAL NEG NOT
+%left LPAREN RPAREN
+%nonassoc LBRACE RBRACE
+
+
+%term 
+      ID of string |
+      NUMRAT of ExpOp.rational |
+      NUMINT of BigInt.bigint |
+      RATIONALDEC | INTEGERDEC | BOOLEANDEC | VARDEC |
+      TRUE | FALSE |
+      IF | THEN | ELSE | FI |
+      WHILE | DO | OD |
+      PROCEDURE |
+      PRINT | READ | CALL |
+      INVERSE | MAKERAT | RAT | SHOWRAT | SHOWDECIMAL | FROMDECIMAL | TODECIMAL | NEG |
+      NOT | AND | OR |
+      LCOMMENT | RCOMMENT |
+      RATPLUS | RATSUB | RATTIMES | RATDIV |
+      PLUS | SUB | TIMES | DIV | MOD |
+      LT | LE | GT | GE | EQ | NE |
+      ASSIGN |
+      LPAREN | RPAREN | LBRACE | RBRACE | 
+      SEMI | COMMA|
+      EOF
+
+%nonterm  START of AST |
+          Block of BLOCK |
+          DeclarationSeq of DEC list|
+          RatVarDecls of DEC|
+          IntVarDecls of DEC|
+          BoolVarDecls of DEC|
+          ProcDecls of PROCDEF list|
+          ProcDef of PROCDEF|
+          CommandSeq of CMD list|
+          CommandSeq1 of CMD list|
+          CommandSeq2 of CMD list|
+          Decs of string list|
+          Commands of CMD list|
+          Commands1 of CMD list|
+          Commands2 of CMD list|
+          Command of CMD|
+          AssignmentCmd of CMD|
+          CallCmd of CMD|
+          ReadCmd of CMD|
+          PrintCmd of CMD|
+          ConditionalCmd of CMD|
+          WhileCmd of CMD|
+          Expression of EXP|
+          New1Expression of EXP|
+          New2Expression of EXP|
+          New3Expression of EXP|
+          New4Expression of EXP|
+          New5Expression of EXP|
+          New6Expression of EXP|
+          New7Expression of EXP
+          
+
+%name Calc
+
+
+%eop EOF
+%noshift EOF
+%pos int 
+%verbose
+%%
+
+(* the parser returns the value associated with the expression *)
+
+  (* START : (ref [], NONE)
+        | LBRACE BINDING RBRACE (BINDING, NONE)  
+        | LBRACE BINDING RBRACE EXP (BINDING, SOME EXP)
+        | EXP (ref [], SOME EXP)
+        
+  BINDING : BINDING COMMA ID EQ EXP ((addBinding(ID, EXP1, ListofBindings)))
+          | ID EQ EXP ((addBinding(ID, EXP1, ListofBindings)))
+  EXP : TERM             (TERM)
+      | EXP PLUS TERM    (ExpOp.add(EXP,TERM))
+      | EXP SUB TERM     (ExpOp.subtract(EXP,TERM))
+    
+  TERM: FACTOR         (FACTOR)
+      | TERM TIMES FACTOR  (ExpOp.multiply(TERM,FACTOR))
+      | TERM DIV FACTOR   (valOf(ExpOp.divide(TERM, FACTOR)))
+      
+  FACTOR: NUM           (NUM)
+        | LPAREN EXP RPAREN (EXP)
+        | ID ((finserval((trimsp(ID)), !ListofBindings))) *)
+   (* EXP1 : TERM1             (TERM1)
+      | EXP1 PLUS TERM1    (ExpOp.add(EXP1,TERM1))
+      | EXP1 SUB TERM1     (ExpOp.subtract(EXP1,TERM1))
+    
+  TERM1: FACTOR1         (FACTOR1)
+      | TERM1 TIMES FACTOR1  (ExpOp.multiply(TERM1,FACTOR1))
+      | TERM1 DIV FACTOR1   (valOf(ExpOp.divide(TERM1, FACTOR1)))
+      
+  FACTOR1: NUM           (NUM)
+        | LPAREN EXP1 RPAREN (EXP1) *)
+
+START : Block (PROG(Block))
+
+(* print(intlistToString(HashTable.listItemsi((createTable(DeclarationSeq, ProcDecls))))); *)
+
+Block : DeclarationSeq ProcDecls LBRACE Commands RBRACE (BLOCK(DeclarationSeq, ProcDecls, Commands, SCOPE_TABLE((createTable(DeclarationSeq, ProcDecls))), ref 0))
+
+DeclarationSeq : RatVarDecls IntVarDecls BoolVarDecls (RatVarDecls :: IntVarDecls :: BoolVarDecls :: [])
+
+RatVarDecls : ((DEC([], RATIONAL)))
+            | RATIONALDEC Decs SEMI (DEC(Decs, RATIONAL))
+
+IntVarDecls : (DEC([], INT))
+            | INTEGERDEC Decs SEMI(DEC(Decs, INT))
+
+BoolVarDecls  : (DEC([], BOOL))
+              | BOOLEANDEC Decs SEMI(DEC(Decs, BOOL))
+
+Decs : ID COMMA Decs ((ID :: Decs))
+     | ID (([ID]))
+
+ProcDecls : (([]))
+          | ProcDef SEMI ProcDecls (ProcDef :: ProcDecls)
+
+ProcDef : PROCEDURE ID Block (PROCDEF(ID, Block))
+
+
+Commands : (([]))
+         | Command SEMI Commands (Command :: Commands)
+
+Command : ID ASSIGN Expression ((SET(ID, Expression)))
+        | CALL ID  ((Call(ID)))
+        | READ LPAREN ID RPAREN ((Read(ID)))
+        | PRINT LPAREN Expression RPAREN ((Print(Expression)))
+        | IF Expression THEN LBRACE Commands RBRACE ELSE LBRACE Commands RBRACE FI ((IFFI(Expression,Commands1,Commands2)))
+        | WHILE Expression DO LBRACE Commands RBRACE OD (WHILE(Expression,Commands))
+
+Expression: New1Expression ((New1Expression))
+          | Expression OR New1Expression ((OR(Expression, New1Expression)))
+
+New1Expression: New2Expression ((New2Expression))
+              | New1Expression AND New2Expression ((AND(New1Expression, New2Expression)))
+
+New2Expression: New3Expression ((New3Expression))
+              | New2Expression EQ New3Expression ((EQ(New2Expression, New3Expression)))
+              | New2Expression NE New3Expression  ((NE(New2Expression, New3Expression)))
+
+New3Expression: New4Expression ((New4Expression))
+              | New3Expression GT New4Expression ((GT(New3Expression, New4Expression)))
+              | New3Expression GE New4Expression ((GE(New3Expression, New4Expression)))
+              | New3Expression LT New4Expression ((LT(New3Expression, New4Expression)))
+              | New3Expression LE New4Expression ((LE(New3Expression, New4Expression)))
+
+New4Expression: New5Expression ((New5Expression))
+              | New4Expression PLUS New5Expression ((PLUS(New4Expression, New5Expression)))
+              | New4Expression SUB New5Expression  ((SUB(New4Expression, New5Expression)))
+              | New4Expression RATPLUS New5Expression ((RATPLUS(New4Expression, New5Expression)))
+              | New4Expression RATSUB New5Expression ((RATSUB(New4Expression, New5Expression)))
+              
+New5Expression: New6Expression ((New6Expression))
+              | New5Expression TIMES New6Expression ((TIMES(New5Expression, New6Expression)))
+              | New5Expression DIV New6Expression ((DIV(New5Expression, New6Expression)))
+              | New5Expression MOD New6Expression ((MOD(New5Expression, New6Expression)))
+              | New5Expression RATTIMES New6Expression ((RATTIMES(New5Expression, New6Expression)))
+              | New5Expression RATDIV New6Expression ((RATDIV(New5Expression, New6Expression)))
+
+New6Expression: New7Expression ((New7Expression))
+              | INVERSE New6Expression ((INVERSE(New6Expression)))
+              (* | MAKERAT New7Expression New7Expression ((MAKERAT(New7Expression, New7Expression))) *)
+              | RAT New6Expression ((RAT(New6Expression)))
+              | SHOWRAT New6Expression ((SHOWRAT(New6Expression)))
+              | SHOWDECIMAL New6Expression ((SHOWDECIMAL(New6Expression)))
+              | FROMDECIMAL New6Expression ((FROMDECIMAL(New6Expression)))
+              | TODECIMAL New6Expression ((TODECIMAL(New6Expression)))
+              | NEG New6Expression ((NEG(New6Expression)))
+              | NOT New6Expression ((NOT(New6Expression)))
+              | PLUS New6Expression ((UNPLUS(New6Expression)))
+
+New7Expression: FROMDECIMAL LPAREN NUMRAT RPAREN ((RATIONAL_VALUE(NUMRAT)))
+              | MAKERAT LPAREN Expression COMMA Expression RPAREN ((MAKERAT(Expression1, Expression2)))
+              | NUMINT ((INTEGER_VALUE(NUMINT)))
+              | TRUE ((TRUE))
+              | FALSE ((FALSE))
+              | LPAREN Expression RPAREN ((Expression))
+              | ID ((IDENTIFIER(ID)))
